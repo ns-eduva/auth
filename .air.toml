@@ -1,0 +1,13 @@
+root = "."
+tmp_dir = "tmp/air"
+
+[build]
+cmd = "swag init -o docs -g main.go --parseInternal --pd && go clean && go build -o ./tmp/air/main ./main.go"
+bin = "tmp/air/main"
+include_ext = ["go"]
+exclude_dir = ["tmp", "doc", "docs"]
+watch_dir = "."
+
+[log]
+log = "build.log"
+time = true
