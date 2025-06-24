@@ -1,0 +1,14 @@
+info:
+  contact: {}
+  description: API service Auth d'Eduva
+  title: Eduva Auth
+  version: "1.0"
+paths: {}
+schemes:
+- https
+securityDefinitions:
+  BearerAuth:
+    in: headers
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
