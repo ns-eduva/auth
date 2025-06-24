@@ -1,7 +1,7 @@
 package main
 
 import (
-	"eduva/auth/docs"
+	"eduva-auth/docs"
 	"strings"
 
 	"github.com/gin-gonic/gin"
