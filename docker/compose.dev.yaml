@@ -1,0 +1,49 @@
+name: eduva-${APP_ENV}
+services:
+  eduva-authdev:
+    build:
+      target: ${APP_ENV}
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: eduvaauth_${APP_ENV}
+    image: eduvaauth:${APP_ENV}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-nseven"
+      - "traefik.http.routers.eduva-authdev.rule=${HOST_TRAEFIK}"
+      - "traefik.http.routers.eduva-authdev.entrypoints=websecure"
+      - "traefik.http.routers.eduva-authdev.tls=true"
+      - "traefik.http.routers.eduva-authdev.tls.certresolver=default"
+      - "traefik.http.services.eduva-authdev.loadbalancer.server.port=${PORT}"
+      - "traefik.http.services.eduva-authdev.loadbalancer.server.scheme=http"
+    volumes:
+      - ../:/app
+    env_file:
+      - ../.env
+    networks:
+      - traefik-nseven
+      - eduva
+    depends_on:
+      - eduva-authdev-db
+
+  eduva-authdev-db:
+    image: mongo:7
+    container_name: eduvaauth_${APP_ENV}_db
+    restart: unless-stopped
+    volumes:
+      - eduvaauth_dev_db:/data/db
+      - ../docker/mongo-init:/docker-entrypoint-initdb.d
+    ports:
+      - "${DB_PORT_EX:-27017}:27017"
+    networks:
+      - traefik-nseven
+      - eduva
+
+networks:
+  traefik-nseven:
+    external: true
+  eduva:
+    driver: bridge
+
+volumes:
+  eduvaauth_dev_db:
