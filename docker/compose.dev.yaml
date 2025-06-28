@@ -34,7 +34,7 @@ services:
       - eduvaauth_dev_db:/data/db
       - ../docker/mongo-init:/docker-entrypoint-initdb.d
     ports:
-      - "${DB_PORT_EX:-27017}:27017"
+      - "${DB_PORT_EX:-27018}:27017"
     networks:
       - traefik-nseven
       - eduva
