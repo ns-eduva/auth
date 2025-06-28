@@ -2,17 +2,21 @@ package main
 
 import (
 	"eduva-auth/docs"
+	"eduva-auth/internal/db"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/nsevenpack/env/env"
 	"github.com/nsevenpack/logger/v2/logger"
+	"github.com/nsevenpack/mignosql"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func init() {
-	logger.Init(env.Get("APP_ENV"))
+	appEnv := env.Get("APP_ENV")
+	logger.Init(appEnv)
+	initDbAndMigNosql(appEnv)
 }
 
 // @title Eduva Auth
@@ -55,4 +59,14 @@ func extractStringInBacktick(s string) string {
 
 func setSwaggerOpt(hostTraefik string) {
 	docs.SwaggerInfo.Host = hostTraefik
+}
+
+func initDbAndMigNosql(appEnv string) {
+	db.ConnexionDatabase(appEnv)
+	migrator := mignosql.New(db.Db)
+	// EXAMPLE => migrator.Add(migration.<namefile>)
+	// ajouter les migrations ici ...
+	if err := migrator.Apply(); err != nil {
+		logger.Ff("Erreur lors de l'application des migrations : %v", err)
+	}
 }

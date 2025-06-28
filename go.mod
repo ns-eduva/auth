@@ -6,6 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.10.1
 	github.com/nsevenpack/env v1.0.2
 	github.com/nsevenpack/logger/v2 v2.2.0
+	github.com/nsevenpack/mignosql v0.0.0-20250624175400-ae092b5fada2
 	github.com/nsevenpack/testup v1.0.1
 	github.com/stretchr/testify v1.9.0
 	github.com/swaggo/files v1.0.1
