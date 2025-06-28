@@ -5,6 +5,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && rm -rf /var/lib/apt/lists/*
 RUN go install github.com/air-verse/air@latest
 RUN go install github.com/swaggo/swag/cmd/swag@latest
+RUN go install github.com/nsevenpack/mignosql/cmd/migrationcreate@latest
 RUN mkdir -p /app/tmp/air
 WORKDIR /app
 COPY go.mod go.sum ./
