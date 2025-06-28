@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nsevenpack/env/env"
+	"github.com/nsevenpack/ginresponse"
 	"github.com/nsevenpack/logger/v2/logger"
 	"github.com/nsevenpack/mignosql"
 	swaggerFiles "github.com/swaggo/files"
@@ -39,6 +40,8 @@ func main() {
 	if err := s.Run(host + ":" + port); err != nil {
 		logger.Ef("Une erreur est survenue au lancement du serveur : %v", err)
 	}
+
+	ginresponse.SetFormatter(&ginresponse.JsonFormatter{})
 }
 
 func infoServer(hostTraefik string) {

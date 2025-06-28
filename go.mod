@@ -5,13 +5,15 @@ go 1.24.4
 require (
 	github.com/gin-gonic/gin v1.10.1
 	github.com/nsevenpack/env v1.0.2
+	github.com/nsevenpack/ginresponse v1.2.3
 	github.com/nsevenpack/logger/v2 v2.2.0
 	github.com/nsevenpack/mignosql v0.0.0-20250624175400-ae092b5fada2
 	github.com/nsevenpack/testup v1.0.1
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.4
+	go.mongodb.org/mongo-driver v1.17.4
 )
 
 require (
@@ -53,7 +55,6 @@ require (
 	github.com/xdg-go/scram v1.1.2 // indirect
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
-	go.mongodb.org/mongo-driver v1.17.4 // indirect
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/crypto v0.26.0 // indirect
 	golang.org/x/net v0.25.0 // indirect
