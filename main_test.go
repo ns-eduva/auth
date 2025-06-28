@@ -4,10 +4,13 @@ import (
 	"testing"
 
 	"github.com/nsevenpack/env/env"
+	"github.com/nsevenpack/testup"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestExtractStringInBacktick(t *testing.T) {
+	testup.LogNameTestInfo(t, "Test extract string in backtick")
+
 	tests := []struct {
 		input    string
 		expected string
@@ -24,11 +27,13 @@ func TestExtractStringInBacktick(t *testing.T) {
 }
 
 func TestInitEnv(t *testing.T) {
+	testup.LogNameTestInfo(t, "Test if to access to the .env.test file")
+
 	tests := []struct {
 		key      string
 		expected string
 	}{
-		{"APP_ENV", "test"}, // ici la package e,v prend le .env.test car on est en test
+		{"APP_ENV", "test"},
 	}
 
 	for _, test := range tests {
