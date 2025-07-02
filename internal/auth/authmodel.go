@@ -1,7 +1,9 @@
 package auth
 
 import (
+	"github.com/nsevenpack/logger/v2/logger"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type Auth struct {
@@ -18,4 +20,14 @@ type AuthCreateDto struct {
 	Email    string 				`json:"email" binding:"required,email"`
 	Password string 				`json:"password" binding:"required,min=6"`
 	RoleIDs  []primitive.ObjectID 	`bson:"role_ids" json:"role_ids"`
+}
+
+func (a *Auth) HashPassword() error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(a.Password), bcrypt.DefaultCost)
+	if err != nil {
+		logger.Ef("Erreur de hashage du mot de passe: %v", err)
+		return err
+	}
+	a.Password = string(hashedPassword)
+	return nil
 }
