@@ -16,6 +16,7 @@ type authService struct {
 
 type AuthServiceInterface interface {
 	FindByEmail(ctx context.Context, email string) (*Auth, error)
+	Create(ctx context.Context, auth *Auth) error
 }
 
 func NewAuthService(db *mongo.Database) AuthServiceInterface {

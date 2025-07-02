@@ -2,6 +2,8 @@ package authcontroller
 
 import (
 	"eduva-auth/internal/auth"
+
+	"github.com/gin-gonic/gin"
 )
 
 type authController struct {
@@ -9,6 +11,7 @@ type authController struct {
 }
 
 type AuthControllerInterface interface {
+	Create(*gin.Context)
 }
 
 func NewAuthController(authService auth.AuthServiceInterface) AuthControllerInterface {
