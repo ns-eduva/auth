@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"time"
+
 	"github.com/nsevenpack/logger/v2/logger"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
@@ -30,4 +32,12 @@ func (a *Auth) HashPassword() error {
 	}
 	a.Password = string(hashedPassword)
 	return nil
+}
+
+func (a *Auth) SetTimeStamps() {
+	now := primitive.NewDateTimeFromTime(time.Now())
+	if a.CreatedAt == 0 {
+		a.CreatedAt = now
+	}
+	a.UpdatedAt = now
 }
