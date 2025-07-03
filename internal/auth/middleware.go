@@ -1,14 +1,14 @@
 package auth
 
-type authMiddleware struct {
-	authService AuthServiceInterface
+type userMiddleware struct {
+	userService UserServiceInterface
 }
 
-type AuthMiddlewareInterface interface {
+type UserMiddlewareInterface interface {
 }
 
-func NewAuthMiddleware(authService AuthServiceInterface) AuthMiddlewareInterface {
-	return &authMiddleware{
-		authService: authService,
+func NewUserMiddleware(userService UserServiceInterface) UserMiddlewareInterface {
+	return &userMiddleware{
+		userService: userService,
 	}
 }

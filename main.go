@@ -20,6 +20,7 @@ func init() {
 	appEnv := env.Get("APP_ENV")
 	logger.Init(appEnv)
 	initDbAndMigNosql(appEnv)
+	ginresponse.SetFormatter(&ginresponse.JsonFormatter{})
 }
 
 // @title Eduva Auth

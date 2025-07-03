@@ -6,16 +6,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type authController struct {
-	authService auth.AuthServiceInterface
+type userController struct {
+	userService auth.UserServiceInterface
 }
 
-type AuthControllerInterface interface {
+type UserControllerInterface interface {
 	Create(*gin.Context)
 }
 
-func NewAuthController(authService auth.AuthServiceInterface) AuthControllerInterface {
-	return &authController{
-		authService: authService,
+func NewUserController(userService auth.UserServiceInterface) UserControllerInterface {
+	return &userController{
+		userService: userService,
 	}
 }

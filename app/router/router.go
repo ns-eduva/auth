@@ -17,9 +17,9 @@ import (
 func Router(r *gin.Engine) {
 	pathApiV1 := "api/v1"
 
-	authService := auth.NewAuthService(initializer.Db)
-	//authMiddle := auth.NewAuthMiddleware(authService)
-	authController := authcontroller.NewAuthController(authService)
+	userService := auth.NewUserService(initializer.Db)
+	//authMiddle := auth.NewAuthMiddleware(userService)
+	userController := authcontroller.NewUserController(userService)
 
 	docs.SwaggerInfo.BasePath = "/" + pathApiV1
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
@@ -27,7 +27,7 @@ func Router(r *gin.Engine) {
 	v1 := r.Group(pathApiV1)
 
 	v1Auth := v1.Group("/auth")
-	v1Auth.POST("/register", authController.Create)
+	v1Auth.POST("/register", userController.Create)
 
 	r.NoRoute(func(ctx *gin.Context) {
 		logger.Wf("Route inconnue : %s %s", ctx.Request.Method, ctx.Request.URL.Path)
