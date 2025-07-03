@@ -4,6 +4,7 @@ import (
 	"eduva-auth/app/router"
 	"eduva-auth/docs"
 	"eduva-auth/internal/db"
+	"eduva-auth/migration"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -72,6 +73,7 @@ func initDbAndMigNosql(appEnv string) {
 	migrator := mignosql.New(db.Db)
 	// EXAMPLE => migrator.Add(migration.<namefile>)
 	// ajouter les migrations ici ...
+	migrator.Add(migration.CreateUsersCollection)
 	if err := migrator.Apply(); err != nil {
 		logger.Ff("Erreur lors de l'application des migrations : %v", err)
 	}

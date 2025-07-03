@@ -15,52 +15,52 @@ type authService struct {
 }
 
 type AuthServiceInterface interface {
-	FindByEmail(ctx context.Context, email string) (*Auth, error)
-	Create(ctx context.Context, auth *Auth) error
+	FindByEmail(ctx context.Context, email string) (*User, error)
+	Create(ctx context.Context, user *User) error
 }
 
 func NewAuthService(db *mongo.Database) AuthServiceInterface {
 	return &authService{
-		collection: db.Collection("auth"),
+		collection: db.Collection("users"),
 	}
 }
 
-func (s *authService) FindByEmail(ctx context.Context, email string) (*Auth, error) {
-	var auth Auth
-	err := s.collection.FindOne(ctx, bson.M{"email": email}).Decode(&auth)
+func (s *authService) FindByEmail(ctx context.Context, email string) (*User, error) {
+	var user User
+	err := s.collection.FindOne(ctx, bson.M{"email": email}).Decode(&user)
 	if err != nil {
 		if errors.Is(err, mongo.ErrNoDocuments) {
 			logger.Wf("Erreur mongo no document: %v", err)
 			return nil, nil
 		}
-		logger.Ef("Erreur à la recuperation du auth: %v", err)
+		logger.Ef("Erreur à la recuperation de l'utilisateur: %v", err)
 		return nil, err
 	}
-	return &auth, nil
+	return &user, nil
 }
 
-func (s *authService) Create(ctx context.Context, auth *Auth) error {
-	auth.SetTimeStamps()
+func (s *authService) Create(ctx context.Context, user *User) error {
+	user.SetTimeStamps()
 
-	existingAuth, err := s.FindByEmail(ctx, auth.Email)
+	existingUser, err := s.FindByEmail(ctx, user.Email)
 	if err != nil {
 		return err
 	}
-	if existingAuth != nil {
-		logger.Ef("Un utilisateur avec cet email existe déjà : %s", auth.Email)
+	if existingUser != nil {
+		logger.Ef("Un utilisateur avec cet email existe déjà : %s", user.Email)
 		return errors.New("impossible de créer votre compte")
 	}
 
-	if err := auth.HashPassword(); err != nil {
+	if err := user.HashPassword(); err != nil {
 		return err
 	}
 
-	result, err := s.collection.InsertOne(ctx, auth)
+	result, err := s.collection.InsertOne(ctx, user)
 	if err != nil {
 		logger.Ef("Une erreur est survenue au moment de creer le compte : %v", err)
 		return err
 	}
 
-	auth.ID = result.InsertedID.(primitive.ObjectID)
+	user.ID = result.InsertedID.(primitive.ObjectID)
 	return nil
 }

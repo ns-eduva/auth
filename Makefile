@@ -67,7 +67,7 @@ tvf: ## execute les tests avec verbose d'un package - usage: make tvf file=chemi
 
 ## —— MIGRATION DB ——————————————————————————————————
 cm: ## créé un fichier de migration - usage: make cm file=nom_du_fichier
-	docker exec -it eduvacore_$(APP_ENV) migrationcreate $(file)
+	docker exec -it eduvaauth_$(APP_ENV) migrationcreate $(file)
 
 ## —— HELPER DB ——————————————————————————————————
 see-db: ## affiche les collections de la base de données

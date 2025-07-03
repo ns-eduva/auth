@@ -8,7 +8,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type Auth struct {
+type User struct {
 	ID        primitive.ObjectID   `bson:"_id,omitempty" json:"id"`
 	Email     string               `bson:"email" json:"email"`
 	Password  string               `bson:"password" json:"password"`
@@ -18,26 +18,26 @@ type Auth struct {
 	UpdatedAt primitive.DateTime   `bson:"updated_at" json:"updated_at"`
 }
 
-type AuthCreateDto struct {
+type UserCreateDto struct {
 	Email    string 				`json:"email" binding:"required,email"`
 	Password string 				`json:"password" binding:"required,min=6"`
 	RoleIDs  []primitive.ObjectID 	`bson:"role_ids" json:"role_ids"`
 }
 
-func (a *Auth) HashPassword() error {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(a.Password), bcrypt.DefaultCost)
+func (u *User) HashPassword() error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
 	if err != nil {
 		logger.Ef("Erreur de hashage du mot de passe: %v", err)
 		return err
 	}
-	a.Password = string(hashedPassword)
+	u.Password = string(hashedPassword)
 	return nil
 }
 
-func (a *Auth) SetTimeStamps() {
+func (u *User) SetTimeStamps() {
 	now := primitive.NewDateTimeFromTime(time.Now())
-	if a.CreatedAt == 0 {
-		a.CreatedAt = now
+	if u.CreatedAt == 0 {
+		u.CreatedAt = now
 	}
-	a.UpdatedAt = now
+	u.UpdatedAt = now
 }
