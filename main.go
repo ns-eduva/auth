@@ -1,6 +1,7 @@
 package main
 
 import (
+	"eduva-auth/app/router"
 	"eduva-auth/docs"
 	"eduva-auth/internal/db"
 	"strings"
@@ -32,6 +33,8 @@ func main() {
 	host := "0.0.0.0"
 	hostTraefik := extractStringInBacktick(env.Get("HOST_TRAEFIK"))
 	port := env.Get("PORT")
+
+	router.Router(s)
 
 	setSwaggerOpt(hostTraefik)
 	s.GET("/api-doc/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
