@@ -9,6 +9,6 @@ type Permission struct {
 }
 
 type PermissionCreateDto struct {
-	Name        string             `bson:"name" json:"name"`
-	Description string             `bson:"description" json:"description"`
+	Name        string             `bson:"name" json:"name" binding:"required,min=1"`
+	Description string             `bson:"description" json:"description" binding:"required,min=1"`
 }
