@@ -12,6 +12,7 @@ type permissionController struct {
 
 type PermissionControllerInterface interface {
 	Create(*gin.Context)
+	GetOneById(c *gin.Context)
 }
 
 func NewPermissionController(permissionService permission.PermissionServiceInterface) PermissionControllerInterface {
