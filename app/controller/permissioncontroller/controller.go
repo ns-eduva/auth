@@ -2,6 +2,8 @@ package permissioncontroller
 
 import (
 	"eduva-auth/internal/permission"
+
+	"github.com/gin-gonic/gin"
 )
 
 type permissionController struct {
@@ -9,7 +11,7 @@ type permissionController struct {
 }
 
 type PermissionControllerInterface interface {
-	// Create(*gin.Context)
+	Create(*gin.Context)
 }
 
 func NewPermissionController(permissionService permission.PermissionServiceInterface) PermissionControllerInterface {

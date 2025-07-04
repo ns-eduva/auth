@@ -2,8 +2,10 @@ package router
 
 import (
 	"eduva-auth/app/controller/authcontroller"
+	"eduva-auth/app/controller/permissioncontroller"
 	"eduva-auth/docs"
 	"eduva-auth/internal/auth"
+	"eduva-auth/internal/permission"
 
 	initializer "eduva-auth/internal/db"
 
@@ -21,6 +23,9 @@ func Router(r *gin.Engine) {
 	//authMiddle := auth.NewAuthMiddleware(userService)
 	userController := authcontroller.NewUserController(userService)
 
+	permissionService := permission.NewPermissionService(initializer.Db)
+	permissionController := permissioncontroller.NewPermissionController(permissionService)
+
 	docs.SwaggerInfo.BasePath = "/" + pathApiV1
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
@@ -28,6 +33,9 @@ func Router(r *gin.Engine) {
 
 	v1Auth := v1.Group("/auth")
 	v1Auth.POST("/register", userController.Create)
+
+	v1Permission := v1.Group("/permission")
+	v1Permission.POST("/create", permissionController.Create)
 
 	r.NoRoute(func(ctx *gin.Context) {
 		logger.Wf("Route inconnue : %s %s", ctx.Request.Method, ctx.Request.URL.Path)
