@@ -57,3 +57,31 @@ func (s *permissionService) GetOneById(ctx context.Context, permissionId primiti
 
 	return &permission, nil
 }
+
+func (s *permissionService) UpdateOne(ctx context.Context, permissionId primitive.ObjectID, permissionUpdateDto PermissionUpdateDto) error {
+	filter := bson.M{"_id": permissionId}
+	
+	var permission Permission
+
+    if err := s.collection.FindOne(ctx, filter).Decode(&permission); err != nil {
+        logger.Ef("impossible de trouver la permission _id: %s, error: %s", permissionId.Hex(), err.Error())
+        return errors.New("aucune permission trouvée")
+    }
+
+	update := bson.M{
+        "$set": bson.M{
+            "name": permissionUpdateDto.Name,
+			"description": permissionUpdateDto.Description,
+        },
+    }
+
+	_, err := s.collection.UpdateOne(ctx, filter, update)
+    if err != nil {
+        logger.Ef("Erreur lors de la mise à jour de la permission _id: %s, error: %s", permissionId.Hex(), err.Error())
+        return errors.New("impossible de mettre à jour la permission")
+    }
+
+    logger.Sf("permission mise à jour _id: %s", permissionId.Hex())
+
+    return nil
+}
