@@ -21,7 +21,7 @@ type User struct {
 type UserCreateDto struct {
 	Email    string 				`json:"email" binding:"required,email"`
 	Password string 				`json:"password" binding:"required,min=6"`
-	CrmID     string               `bson:"crm_id" json:"crm_id"`
+	CrmID    string                 `bson:"crm_id" json:"crm_id"`
 	RoleIDs  []primitive.ObjectID 	`bson:"role_ids" json:"role_ids"`
 }
 
