@@ -25,17 +25,6 @@ type UserCreateDto struct {
 	RoleIDs  []primitive.ObjectID 	`bson:"role_ids" json:"role_ids"`
 }
 
-type Permission struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	Name        string             `bson:"name" json:"name"`
-	Description string             `bson:"description" json:"description"`
-}
-
-type PermissionCreateDto struct {
-	Name        string             `bson:"name" json:"name"`
-	Description string             `bson:"description" json:"description"`
-}
-
 type Role struct {
 	ID            primitive.ObjectID   `bson:"_id,omitempty" json:"id"`
 	Name          string               `bson:"name" json:"name"`
