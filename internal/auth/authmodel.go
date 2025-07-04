@@ -21,7 +21,19 @@ type User struct {
 type UserCreateDto struct {
 	Email    string 				`json:"email" binding:"required,email"`
 	Password string 				`json:"password" binding:"required,min=6"`
+	CrmID     string               `bson:"crm_id" json:"crm_id"`
 	RoleIDs  []primitive.ObjectID 	`bson:"role_ids" json:"role_ids"`
+}
+
+type Permission struct {
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id"`
+	Name        string             `bson:"name" json:"name"`
+	Description string             `bson:"description" json:"description"`
+}
+
+type PermissionCreateDto struct {
+	Name        string             `bson:"name" json:"name"`
+	Description string             `bson:"description" json:"description"`
 }
 
 func (u *User) HashPassword() error {

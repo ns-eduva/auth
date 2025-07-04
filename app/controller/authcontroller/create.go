@@ -23,7 +23,6 @@ func (u *userController) Create(c *gin.Context) {
 
 	_, err := u.userService.Create(c, userCreateDto)
 	if err != nil {
-		logger.Ef("LAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 		logger.Ef("%v", err)
 		ginresponse.InternalServerError(c, err.Error(), err.Error())
 		return

@@ -43,6 +43,7 @@ func (s *userService) Create(ctx context.Context, userCreateDto UserCreateDto) (
 	user := &User{
 		Email:   userCreateDto.Email,
 		Password: userCreateDto.Password,
+		CrmID: userCreateDto.CrmID,
 		RoleIDs: userCreateDto.RoleIDs,
 	}
 
