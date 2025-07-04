@@ -36,6 +36,7 @@ func Router(r *gin.Engine) {
 
 	v1Permission := v1.Group("/permission")
 	v1Permission.POST("/create", permissionController.Create)
+	v1Permission.GET("/:id", permissionController.GetOneById)
 
 	r.NoRoute(func(ctx *gin.Context) {
 		logger.Wf("Route inconnue : %s %s", ctx.Request.Method, ctx.Request.URL.Path)
