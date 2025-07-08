@@ -47,6 +47,7 @@ func Router(r *gin.Engine) {
 
 	v1Role := v1.Group("/role")
 	v1Role.POST("/create", roleController.Create)
+	v1Role.POST("/get", roleController.GetByIds)
 
 	r.NoRoute(func(ctx *gin.Context) {
 		logger.Wf("Route inconnue : %s %s", ctx.Request.Method, ctx.Request.URL.Path)
