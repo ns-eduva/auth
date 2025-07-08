@@ -28,7 +28,7 @@ func Router(r *gin.Engine) {
 	permissionService := permission.NewPermissionService(initializer.Db)
 	permissionController := permissioncontroller.NewPermissionController(permissionService)
 
-	roleService := role.NewRoleService(initializer.Db)
+	roleService := role.NewRoleService(initializer.Db, permissionService)
 	roleController := rolecontroller.NewRoleController(roleService)
 
 	docs.SwaggerInfo.BasePath = "/" + pathApiV1

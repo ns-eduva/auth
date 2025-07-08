@@ -19,6 +19,7 @@ type PermissionServiceInterface interface {
 	GetOneById(ctx context.Context, permissionId primitive.ObjectID) (*Permission, error)
 	UpdateOne(ctx context.Context, permissionId primitive.ObjectID, permissionUpdateDto PermissionUpdateDto) error
 	Delete(ctx context.Context, ids []primitive.ObjectID) error
+	FilterExisting(ctx context.Context, ids []primitive.ObjectID) ([]primitive.ObjectID, error)
 }
 
 func NewPermissionService(db *mongo.Database) PermissionServiceInterface {
