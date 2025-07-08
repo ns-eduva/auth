@@ -21,7 +21,6 @@ type RoleWithPermissions struct {
 	PermissionsPopulated []permission.Permission `bson:"permissions_populated,omitempty" json:"permissions_populated,omitempty"`
 }
 
-
 type RoleCreateDto struct {
 	Name          string               `bson:"name,omitempty" json:"name,omitempty"`
 	Description   string               `bson:"description,omitempty" json:"description,omitempty"`
