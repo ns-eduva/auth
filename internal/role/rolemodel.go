@@ -23,11 +23,17 @@ type RoleWithPermissions struct {
 
 
 type RoleCreateDto struct {
-	Name          string               `bson:"name" json:"name"`
-	Description   string               `bson:"description" json:"description"`
+	Name          string               `bson:"name,omitempty" json:"name,omitempty"`
+	Description   string               `bson:"description,omitempty" json:"description,omitempty"`
 	PermissionIDs []primitive.ObjectID `bson:"permission_ids" json:"permission_ids"`
 }
 
 type RoleGetDto struct {
 	Ids 		[]string 			`json:"ids" validate:"required"`
+}
+
+type RoleUpdateDto struct {
+	Name          string               `bson:"name,omitempty" json:"name,omitempty"`
+	Description   string               `bson:"description,omitempty" json:"description,omitempty"`
+	PermissionIDs []primitive.ObjectID `bson:"permission_ids" json:"permission_ids"`
 }

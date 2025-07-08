@@ -94,3 +94,30 @@ func (s *roleService) GetById(ctx context.Context, roleIds []primitive.ObjectID)
 	return results, nil
 }
 
+func (s *roleService) UpdateOne(ctx context.Context, roleId primitive.ObjectID, roleUpdateDto RoleUpdateDto) error {
+	filter := bson.M{"_id": roleId}
+	
+	var role Role
+
+    if err := s.collection.FindOne(ctx, filter).Decode(&role); err != nil {
+        logger.Ef("impossible de trouver la role _id: %s, error: %s", roleId.Hex(), err.Error())
+        return errors.New("aucune role trouvée")
+    }
+
+	update := bson.M{
+        "$set": bson.M{
+            "name": roleUpdateDto.Name,
+			"description": roleUpdateDto.Description,
+        },
+    }
+
+	_, err := s.collection.UpdateOne(ctx, filter, update)
+    if err != nil {
+        logger.Ef("Erreur lors de la mise à jour de la role _id: %s, error: %s", roleId.Hex(), err.Error())
+        return errors.New("impossible de mettre à jour la role")
+    }
+
+    logger.Sf("role mise à jour _id: %s", roleId.Hex())
+
+    return nil
+}
