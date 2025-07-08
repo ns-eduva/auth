@@ -19,7 +19,7 @@ type roleService struct {
 
 type RoleServiceInterface interface {
 	Create(ctx context.Context, roleCreateDto RoleCreateDto) (*Role, error)
-	GetById(ctx context.Context, roleIds []primitive.ObjectID) ([]*Role, error)
+	GetById(ctx context.Context, roleIds []primitive.ObjectID) ([]*RoleWithPermissions, error)
 }
 
 func NewRoleService(db *mongo.Database, permissionService permission.PermissionServiceInterface) RoleServiceInterface {
@@ -56,39 +56,41 @@ func (s *roleService) Create(ctx context.Context, roleCreateDto RoleCreateDto) (
 	return role, nil
 }
 
-func (s *roleService) GetById(ctx context.Context, roleIds []primitive.ObjectID) ([]*Role, error) {
+func (s *roleService) GetById(ctx context.Context, roleIds []primitive.ObjectID) ([]*RoleWithPermissions, error) {
 	if len(roleIds) == 0 {
 		return nil, errors.New("aucun ID fourni")
 	}
 
-	filter := bson.M{"_id": bson.M{"$in": roleIds}}
+	pipeline := mongo.Pipeline{
+		{{Key: "$match", Value: bson.M{"_id": bson.M{"$in": roleIds}}}},
+		{{
+			Key: "$lookup",
+			Value: bson.M{
+				"from":         "permissions",
+				"localField":   "permission_ids",
+				"foreignField": "_id",
+				"as":           "permissions_populated",
+			},
+		}},
+	}
 
-	cursor, err := s.collection.Find(ctx, filter)
+	cursor, err := s.collection.Aggregate(ctx, pipeline)
 	if err != nil {
-		logger.Ef("Erreur lors de la récupération des roles : %v", err)
+		logger.Ef("Erreur lors de l'aggregation pour récupérer les roles : %v", err)
 		return nil, err
 	}
 	defer cursor.Close(ctx)
 
-	var roles []*Role
-
-	for cursor.Next(ctx) {
-		var role Role
-		if err := cursor.Decode(&role); err != nil {
-			logger.Ef("Erreur lors du décodage d'un role : %v", err)
-			return nil, err
-		}
-		roles = append(roles, &role)
-	}
-
-	if err := cursor.Err(); err != nil {
-		logger.Ef("Erreur du curseur lors de la récupération des roles : %v", err)
+	var results []*RoleWithPermissions
+	if err := cursor.All(ctx, &results); err != nil {
+		logger.Ef("Erreur lors du décodage des roles avec permissions : %v", err)
 		return nil, err
 	}
 
-	if len(roles) == 0 {
+	if len(results) == 0 {
 		return nil, errors.New("aucun role trouvé pour les IDs fournis")
 	}
 
-	return roles, nil
+	return results, nil
 }
+
