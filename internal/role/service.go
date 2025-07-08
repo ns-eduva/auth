@@ -19,6 +19,7 @@ type roleService struct {
 
 type RoleServiceInterface interface {
 	Create(ctx context.Context, roleCreateDto RoleCreateDto) (*Role, error)
+	GetById(ctx context.Context, roleIds []primitive.ObjectID) ([]*Role, error)
 }
 
 func NewRoleService(db *mongo.Database, permissionService permission.PermissionServiceInterface) RoleServiceInterface {
