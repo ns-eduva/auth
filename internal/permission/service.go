@@ -86,3 +86,16 @@ func (s *permissionService) UpdateOne(ctx context.Context, permissionId primitiv
 
     return nil
 }
+
+func (s *permissionService) Delete(ctx context.Context, ids []primitive.ObjectID) error {
+	filter := bson.M{"_id": bson.M{"$in": ids}}
+
+	_, err := s.collection.DeleteMany(ctx, filter)
+	if err != nil {
+		logger.Ef("impossible de supprimer les permissions _id: %v", ids)
+		return errors.New("impossible de supprimer les permissions")
+	}
+
+	logger.Sf("permissions supprimées _id: %v", ids)
+	return nil
+}
