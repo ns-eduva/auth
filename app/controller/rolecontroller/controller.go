@@ -2,6 +2,8 @@ package rolecontroller
 
 import (
 	"eduva-auth/internal/role"
+
+	"github.com/gin-gonic/gin"
 )
 
 type roleController struct {
@@ -9,7 +11,7 @@ type roleController struct {
 }
 
 type RoleControllerInterface interface {
-
+	Create(c *gin.Context)
 }
 
 func NewRoleController(roleService role.RoleServiceInterface) RoleControllerInterface {
