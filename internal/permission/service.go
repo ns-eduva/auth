@@ -100,3 +100,36 @@ func (s *permissionService) Delete(ctx context.Context, ids []primitive.ObjectID
 	logger.Sf("permissions supprimées _id: %v", ids)
 	return nil
 }
+
+func (s *permissionService) FilterExisting(ctx context.Context, ids []primitive.ObjectID) ([]primitive.ObjectID, error) {
+	filter := bson.M{"_id": bson.M{"$in": ids}}
+
+	cursor, err := s.collection.Find(ctx, filter)
+	if err != nil {
+		logger.Ef("Erreur lors de la vérification des permissions existantes : %v", err)
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var validIDs []primitive.ObjectID
+
+	for cursor.Next(ctx) {
+		var permission struct {
+			ID primitive.ObjectID `bson:"_id"`
+		}
+
+		if err := cursor.Decode(&permission); err != nil {
+			logger.Ef("Erreur lors du décodage d'une permission existante : %v", err)
+			return nil, err
+		}
+
+		validIDs = append(validIDs, permission.ID)
+	}
+
+	if err := cursor.Err(); err != nil {
+		logger.Ef("Erreur du curseur lors de la vérification des permissions : %v", err)
+		return nil, err
+	}
+
+	return validIDs, nil
+}
