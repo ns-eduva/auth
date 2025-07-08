@@ -14,3 +14,7 @@ type RoleCreateDto struct {
 	Description   string               `bson:"description" json:"description"`
 	PermissionIDs []primitive.ObjectID `bson:"permission_ids" json:"permission_ids"`
 }
+
+type RoleGetDto struct {
+	Ids 		[]string 			`json:"ids" validate:"required"`
+}
