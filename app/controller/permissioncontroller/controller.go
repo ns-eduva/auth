@@ -14,6 +14,7 @@ type PermissionControllerInterface interface {
 	Create(*gin.Context)
 	GetOneById(c *gin.Context)
 	UpdateOne(c *gin.Context)
+	Delete(c *gin.Context)
 }
 
 func NewPermissionController(permissionService permission.PermissionServiceInterface) PermissionControllerInterface {

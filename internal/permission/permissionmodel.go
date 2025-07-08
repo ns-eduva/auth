@@ -17,3 +17,7 @@ type PermissionUpdateDto struct {
 	Name        string             `bson:"name,omitempty" json:"name,omitempty"`
 	Description string             `bson:"description,omitempty" json:"description,omitempty"`
 }
+
+type PermissionDeleteDto struct {
+	Ids 		[]string 			`json:"ids" validate:"required"`
+}
